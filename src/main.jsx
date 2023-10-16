@@ -11,6 +11,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <App></App>,
     loader: () => fetch("http://localhost:5000/coffees"),
+    // loader: () => fetch("https://coffee-store-server-theta.vercel.app/coffees"),
   },
   {
     path: "/addcoffee",

@@ -1,19 +1,62 @@
 import { useLoaderData } from "react-router-dom";
 import "./App.css";
+import Swal from "sweetalert2";
 
 function App() {
   const coffees = useLoaderData();
 
+  const handleDelete = (id) => {
+    console.log(id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:5000/coffees/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            if (data.deletedCount > 0) {
+              Swal.fire("Deleted!", "Coffee has been deleted.", "success");
+            }
+          });
+      }
+    });
+  };
+
   return (
     <>
-      <h1 className="text-6xl text-purple-600">All Coffe {coffees.length}</h1>
-      <div>
+      <h2 className="text-2xl font-semibold mb-4">Coffee List</h2>
+      <ul className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {coffees.map((coffee) => (
-          <h2 key={coffee._id}>{coffee.name}
-          
-          </h2>
+          <li
+            key={coffee._id}
+            className="bg-white shadow-lg rounded-lg p-4 mb-4 flex justify-between items-center"
+          >
+            <div>
+              <h3 className="text-xl font-semibold mb-2">{coffee.name}</h3>
+            </div>
+            <div className="flex">
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                Edit
+              </button>
+              <button
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 ml-2"
+                onClick={() => handleDelete(coffee._id)}
+              >
+                Delete
+              </button>
+            </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </>
   );
 }

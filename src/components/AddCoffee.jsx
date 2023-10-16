@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+
 const AddCoffee = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,7 +22,7 @@ const AddCoffee = () => {
       photo,
     };
 
-    console.log(CoffeeDetails);
+    // fetch("https://coffee-store-server-theta.vercel.app/coffees",)
 
     fetch("http://localhost:5000/coffees", {
       method: "POST",
@@ -32,6 +34,14 @@ const AddCoffee = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        if (data.insertedId) {
+          Swal.fire({
+            icon: "success",
+            title: "Coffee Added Successfully",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+        }
       });
   };
   return (
