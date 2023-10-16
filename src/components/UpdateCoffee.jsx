@@ -27,7 +27,7 @@ const UpdateCoffee = () => {
       photo,
     };
 
-    fetch(`http://localhost:5000/coffees/${_id}`, {
+    fetch(`https://coffee-store-server-theta.vercel.app/coffees/${_id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

@@ -24,7 +24,7 @@ const AddCoffee = () => {
 
     // fetch("https://coffee-store-server-theta.vercel.app/coffees",)
 
-    fetch("http://localhost:5000/coffees", {
+    fetch("https://coffee-store-server-theta.vercel.app/coffees", {
       method: "POST",
       headers: {
         "content-type": "application/json",
