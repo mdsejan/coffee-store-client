@@ -1,9 +1,12 @@
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import "./App.css";
 import Swal from "sweetalert2";
+import { useState } from "react";
 
 function App() {
-  const coffees = useLoaderData();
+  const loadedCoffees = useLoaderData();
+
+  const [coffees, setCoffees] = useState(loadedCoffees);
 
   const handleDelete = (id) => {
     console.log(id);
@@ -25,6 +28,10 @@ function App() {
             console.log(data);
             if (data.deletedCount > 0) {
               Swal.fire("Deleted!", "Coffee has been deleted.", "success");
+
+              const remaining = coffees.filter((coffee) => coffee._id !== id);
+
+              setCoffees(remaining);
             }
           });
       }
@@ -44,9 +51,11 @@ function App() {
               <h3 className="text-xl font-semibold mb-2">{coffee.name}</h3>
             </div>
             <div className="flex">
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-                Edit
-              </button>
+              <Link to={`/updatecoffee/${coffee._id}`}>
+                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                  Edit
+                </button>
+              </Link>
               <button
                 className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 ml-2"
                 onClick={() => handleDelete(coffee._id)}

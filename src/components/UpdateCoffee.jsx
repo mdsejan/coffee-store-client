@@ -1,4 +1,11 @@
+import { useLoaderData } from "react-router-dom";
+import Swal from "sweetalert2";
+
 const UpdateCoffee = () => {
+  const loadedCoffee = useLoaderData();
+  const { _id, name, chef, supplier, taste, category, details, photo } =
+    loadedCoffee || {};
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -20,7 +27,24 @@ const UpdateCoffee = () => {
       photo,
     };
 
-    console.log(CoffeeDetails);
+    fetch(`http://localhost:5000/coffees/${_id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(CoffeeDetails),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.modifiedCount > 0) {
+          Swal.fire({
+            icon: "success",
+            title: "Coffee Updated Successfully",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+        }
+      });
   };
   return (
     <div className="flex flex-col justify-center items-center min-h-screen mx-3 md:mx-8">
@@ -41,6 +65,7 @@ const UpdateCoffee = () => {
               name="name"
               type="text"
               placeholder="Name"
+              defaultValue={name}
             />
           </div>
           <div className="w-full md:w-1/2 px-4">
@@ -55,6 +80,7 @@ const UpdateCoffee = () => {
               name="chef"
               type="text"
               placeholder="Chef"
+              defaultValue={chef}
             />
           </div>
           <div className="w-full md:w-1/2 px-4">
@@ -69,6 +95,7 @@ const UpdateCoffee = () => {
               name="supplier"
               type="text"
               placeholder="Supplier"
+              defaultValue={supplier}
             />
           </div>
           <div className="w-full md:w-1/2 px-4">
@@ -83,6 +110,7 @@ const UpdateCoffee = () => {
               name="taste"
               type="text"
               placeholder="Taste"
+              defaultValue={taste}
             />
           </div>
           <div className="w-full md:w-1/2 px-4">
@@ -97,6 +125,7 @@ const UpdateCoffee = () => {
               name="category"
               type="text"
               placeholder="Category"
+              defaultValue={category}
             />
           </div>
           <div className="w-full md:w-1/2 px-4">
@@ -111,6 +140,7 @@ const UpdateCoffee = () => {
               name="details"
               type="text"
               placeholder="Details"
+              defaultValue={details}
             />
           </div>
           <div className="w-full md:w-1/2 px-4">
@@ -125,6 +155,7 @@ const UpdateCoffee = () => {
               name="photo"
               type="text"
               placeholder="Photo"
+              defaultValue={photo}
             />
           </div>
           <div className="w-full px-4 mt-12">
@@ -132,7 +163,7 @@ const UpdateCoffee = () => {
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold w-full py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
             >
-              Add Coffee
+              Update Coffee
             </button>
           </div>
         </div>
